@@ -1,6 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var db = require('../db')
+// var express = require('express');
+import { Router } from 'express';
+import * as db from '../db.js';
+
+const router = Router();
 
 router.get('/', function (req, res, next) {
   res.send(`Yes I am working!`);
@@ -499,7 +501,7 @@ function validateAndFormatInputs(inputs) {
   return results
 }
 
-mysqlTimestamp = () => {
+const mysqlTimestamp = () => {
   var date = new Date(Date.now());
   var yyyy = date.getFullYear();
   var mm = date.getMonth() + 1;
@@ -510,4 +512,4 @@ mysqlTimestamp = () => {
   var mysqlDateTime = yyyy + '-' + mm + '-' + dd + ' ' + hh + ':' + min + ':' + ss;
   return mysqlDateTime;
 }
-module.exports = router;
+export default router;

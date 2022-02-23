@@ -1,15 +1,14 @@
-var mysql = require('mysql')
+import mysql from 'mysql';
 
-
-exports.MODE_TEST = 'mode_test'
-exports.MODE_PRODUCTION = 'mode_production'
+export const MODE_TEST = 'mode_test'
+export const MODE_PRODUCTION = 'mode_production'
 
 var state = {
   pool: null,
   mode: null,
 }
 
-mySQLConnection = {
+var mySQLConnection = {
   database: "trello",
   host: "localhost",
   user: "apiUser",
@@ -18,7 +17,7 @@ mySQLConnection = {
   multipleStatements: true
 }
 
-exports.executeQueryAsPromise = function (query, values) {
+ export function executeQueryAsPromise (query, values) {
   return new Promise(function (resolve, reject) {
     let rejectObject = { error: null, source: "executeQueryAsPromise", query: query }
     state.pool.query(query, values, (err, rows) => {
@@ -36,7 +35,7 @@ exports.executeQueryAsPromise = function (query, values) {
   })
 }
 
-exports.connect = function (mode) {
+export function connect (mode) {
   return new Promise(function (resolve, reject) {
     const connection = mySQLConnection
     state.pool = mysql.createPool(connection)

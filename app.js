@@ -1,14 +1,17 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+import createError from 'http-errors';
+import express from 'express';
+import path from 'path';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
 
-var indexRouter = require('./routes/index');
-const { stack } = require('./routes/index');
-var db = require('./db')
+import { fileURLToPath } from 'url';
 
-db.connect(db.MODE_PRODUCTION)
+import indexRouter from './routes/index.js';
+const { stack } = indexRouter.stack;
+
+import { connect, MODE_PRODUCTION } from './db.js';
+
+connect(MODE_PRODUCTION)
   .then((response) => {
     console.log(response)
   }).catch((err) => {
@@ -24,12 +27,14 @@ db.connect(db.MODE_PRODUCTION)
 
 
 
-var app = express();
+const app = express();
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+const __fileName = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__fileName);
+app.use(express.static(path.join(__dirname, '../public')));
 
 app.use('/', indexRouter);
 
@@ -46,4 +51,5 @@ app.use(function (err, req, res, next) {
   res.end
 });
 
-module.exports = app;
+// module.exports = app;
+export default app;
