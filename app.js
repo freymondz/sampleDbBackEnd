@@ -4,8 +4,15 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
+// __dirname doesn't work with ES6 syntax so we need to this as a workaround.
 import { fileURLToPath } from 'url';
+const __fileName = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__fileName);
 
+// Originally indexRouter and stack were imported using the ES5 require syntax,
+// however  translating this one to one to ES6 syntax doesn't work. Instead
+// we have to import the router from index.js and then assign the stack from the router
+// to a variable to use in this file.
 import indexRouter from './routes/index.js';
 const { stack } = indexRouter.stack;
 
@@ -32,8 +39,6 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-const __fileName = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__fileName);
 app.use(express.static(path.join(__dirname, '../public')));
 
 app.use('/', indexRouter);
