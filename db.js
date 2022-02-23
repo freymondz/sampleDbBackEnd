@@ -1,55 +1,51 @@
 import mysql from 'mysql';
 
-export const MODE_TEST = 'mode_test'
-export const MODE_PRODUCTION = 'mode_production'
+export const MODE_TEST = 'mode_test';
+export const MODE_PRODUCTION = 'mode_production';
 
-var state = {
+const state = {
   pool: null,
-  mode: null,
-}
+  mode: null
+};
 
-var mySQLConnection = {
+const mySQLConnection = {
   database: "trello",
   host: "localhost",
   user: "apiUser",
   port: 3306,
   password: "!apisAreFun",
   multipleStatements: true
-}
+};
 
- export function executeQueryAsPromise (query, values) {
+export function executeQueryAsPromise (query, values) {
   return new Promise(function (resolve, reject) {
-    let rejectObject = { error: null, source: "executeQueryAsPromise", query: query }
+    const rejectObject = { error: null, source: "executeQueryAsPromise", query: query };
     state.pool.query(query, values, (err, rows) => {
       if (err) {
-        rejectObject.error = err
-        return reject(rejectObject)
+        rejectObject.error = err;
+        return reject(rejectObject);
       }
       if (rows === undefined) {
         rejectObject.error = err;
-        return reject(rejectObject)
+        return reject(rejectObject);
       } else {
-        return resolve(rows)
+        return resolve(rows);
       }
-    })
-  })
+    });
+  });
 }
 
 export function connect (mode) {
   return new Promise(function (resolve, reject) {
-    const connection = mySQLConnection
-    state.pool = mysql.createPool(connection)
+    const connection = mySQLConnection;
+    state.pool = mysql.createPool(connection);
     state.pool.getConnection(function (err, connection) {
       if (err) {
-        return reject(err)
+        return reject(err);
       } else {
-        state.mode = mode
-        return resolve(`Connected successfully to the ${mySQLConnection.database} database on ${mySQLConnection.host}`)
+        state.mode = mode;
+        return resolve(`Connected successfully to the ${mySQLConnection.database} database on ${mySQLConnection.host}`);
       }
-    })
-
-  })
+    });
+  });
 }
-
-
-
