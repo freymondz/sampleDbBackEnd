@@ -1,4 +1,4 @@
-import mysql from 'mysql';
+import { createPool } from 'mysql';
 
 export const MODE_TEST = 'mode_test';
 export const MODE_PRODUCTION = 'mode_production';
@@ -18,7 +18,7 @@ const mySQLConnection = {
 };
 
 export function executeQueryAsPromise (query, values) {
-  return new Promise(function (resolve, reject) {
+  return new Promise((resolve, reject) => {
     const rejectObject = { error: null, source: "executeQueryAsPromise", query: query };
     state.pool.query(query, values, (err, rows) => {
       if (err) {
@@ -36,10 +36,10 @@ export function executeQueryAsPromise (query, values) {
 }
 
 export function connect (mode) {
-  return new Promise(function (resolve, reject) {
+  return new Promise((resolve, reject) => {
     const connection = mySQLConnection;
-    state.pool = mysql.createPool(connection);
-    state.pool.getConnection(function (err, connection) {
+    state.pool = createPool(connection);
+    state.pool.getConnection((err, connection) => {
       if (err) {
         return reject(err);
       } else {

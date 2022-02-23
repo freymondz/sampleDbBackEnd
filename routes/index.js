@@ -25,7 +25,7 @@ router.get('/showTables', (req, res, next) => {
 //* ***********CREATE ROUTES*********** */
 //* *********************************** */
 
-router.post("/addOrUpdateUser", function (req, res, next) {
+router.post("/addOrUpdateUser", (req, res, next) => {
   const { inputs } = req.body;
   let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
@@ -51,7 +51,7 @@ router.post("/addOrUpdateUser", function (req, res, next) {
   }
 });
 
-router.post("/addOrUpdateBoard", function (req, res, next) {
+router.post("/addOrUpdateBoard", (req, res, next) => {
   const { inputs } = req.body;
   let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
@@ -77,7 +77,7 @@ router.post("/addOrUpdateBoard", function (req, res, next) {
   }
 });
 
-router.post("/addOrUpdateList", function (req, res, next) {
+router.post("/addOrUpdateList", (req, res, next) => {
   const { inputs } = req.body;
   let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
@@ -103,7 +103,7 @@ router.post("/addOrUpdateList", function (req, res, next) {
   }
 });
 
-router.post("/addOrUpdateUserBoard", function (req, res, next) {
+router.post("/addOrUpdateUserBoard", (req, res, next) => {
   const { inputs } = req.body;
   let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
@@ -129,7 +129,7 @@ router.post("/addOrUpdateUserBoard", function (req, res, next) {
   }
 });
 
-router.post("/addOrUpdateCard", function (req, res, next) {
+router.post("/addOrUpdateCard", (req, res, next) => {
   const { inputs } = req.body;
   let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
@@ -270,7 +270,7 @@ router.get('/getCard/:cardId', (req, res, next) => {
 //* *********************************** */
 // Update queries can be done as posts
 
-router.post("/updateCardOrder", function (req, res, next) {
+router.post("/updateCardOrder", (req, res, next) => {
   const { inputs } = req.body;
   let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
@@ -294,7 +294,7 @@ router.post("/updateCardOrder", function (req, res, next) {
   }
 });
 
-router.post("/updateListOrder", function (req, res, next) {
+router.post("/updateListOrder", (req, res, next) => {
   const { inputs } = req.body;
   let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
@@ -322,7 +322,7 @@ router.post("/updateListOrder", function (req, res, next) {
 //* **********DELETE ROUTES*********** */
 //* *********************************** */
 
-router.post("/deleteUser", function (req, res, next) {
+router.post("/deleteUser", (req, res, next) => {
   const { inputs } = req.body;
   let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
@@ -346,7 +346,7 @@ router.post("/deleteUser", function (req, res, next) {
   }
 });
 
-router.post("/deleteBoard", function (req, res, next) {
+router.post("/deleteBoard", (req, res, next) => {
   const { inputs } = req.body;
   let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
@@ -370,7 +370,7 @@ router.post("/deleteBoard", function (req, res, next) {
   }
 });
 
-router.post("/deleteList", function (req, res, next) {
+router.post("/deleteList", (req, res, next) => {
   const { inputs } = req.body;
   let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
@@ -394,7 +394,7 @@ router.post("/deleteList", function (req, res, next) {
   }
 });
 
-router.post("/deleteCard", function (req, res, next) {
+router.post("/deleteCard", (req, res, next) => {
   const { inputs } = req.body;
   let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
