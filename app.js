@@ -56,5 +56,4 @@ app.use(function (err, req, res, next) {
   res.end
 });
 
-// module.exports = app;
 export default app;

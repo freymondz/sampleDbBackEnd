@@ -1,6 +1,6 @@
 // var express = require('express');
 import { Router } from 'express';
-import * as db from '../db.js';
+import { executeQueryAsPromise } from '../db.js';
 
 const router = Router();
 
@@ -11,7 +11,7 @@ router.get('/', function (req, res, next) {
 router.get('/showTables', (req, res, next) => {
   try {
     let query = "show tables;"
-    db.executeQueryAsPromise(query, null)
+    executeQueryAsPromise(query, null)
       .then((queryResults) => {
         if (queryResults.length == 0) {
           queryResults = "No results found"
@@ -37,7 +37,7 @@ router.post("/addOrUpdateUser", function (req, res, next) {
     initials=values(initials), email=values(email), bio=values(bio), active=values(active), dateAdded=values(dateAdded) ;\
     \
     select * from `user`"
-    db.executeQueryAsPromise(query, validatedInputs.placeholders)
+    executeQueryAsPromise(query, validatedInputs.placeholders)
       .then((queryResults) => {
         res.send(queryResults)
       }).catch((error) => {
@@ -63,7 +63,7 @@ router.post("/addOrUpdateBoard", function (req, res, next) {
     on duplicate key update title=values(title), route=values(route), isPrivate=values(isPrivate), description=values(description), background=values(background), settings=values(settings);\
     \
     SELECT * FROM trello.board;"
-    db.executeQueryAsPromise(query, validatedInputs.placeholders)
+    executeQueryAsPromise(query, validatedInputs.placeholders)
       .then((queryResults) => {
         res.send(queryResults)
       }).catch((error) => {
@@ -90,7 +90,7 @@ router.post("/addOrUpdateList", function (req, res, next) {
     on duplicate key update title=values(title); \
     \
     select * from list;"
-    db.executeQueryAsPromise(query, validatedInputs.placeholders)
+    executeQueryAsPromise(query, validatedInputs.placeholders)
       .then((queryResults) => {
         res.send(queryResults)
       }).catch((error) => {
@@ -116,7 +116,7 @@ router.post("/addOrUpdateUserBoard", function (req, res, next) {
     on duplicate key update madeBy=values(madeBy),watch=values(watch); \
     \
     select * from `user-board`;"
-    db.executeQueryAsPromise(query, validatedInputs.placeholders)
+    executeQueryAsPromise(query, validatedInputs.placeholders)
       .then((queryResults) => {
         res.send(queryResults)
       }).catch((error) => {
@@ -142,7 +142,7 @@ router.post("/addOrUpdateCard", function (req, res, next) {
     on duplicate key update title=values(title), `description`=values(`description`), `order`=values(`order`), cover=values(cover), dateDue=values(dateDue), listId=values(listId); \
     \
     select * from card;"
-    db.executeQueryAsPromise(query, validatedInputs.placeholders)
+    executeQueryAsPromise(query, validatedInputs.placeholders)
       .then((queryResults) => {
         res.send(queryResults)
       }).catch((error) => {
@@ -170,7 +170,7 @@ router.get('/getBoardUsers/:boardId', (req, res, next) => {
     join `user-board`  on `user-board`.userId = user.id\
     join board on `user-board`.boardId = board.id\
     where boardId = ?;"
-  db.executeQueryAsPromise(query, inputs)
+  executeQueryAsPromise(query, inputs)
     .then(results => {
       if (results.length == 0) {
         res.send("No results found")
@@ -192,7 +192,7 @@ router.get('/getBoardAndListsAndCards/:boardId', (req, res, next) => {
     join list on list.boardId = board.id\
     join card on card.listId=list.id\
     where board.id = ?;  "
-  db.executeQueryAsPromise(query, inputs)
+  executeQueryAsPromise(query, inputs)
     .then(results => {
       if (results.length == 0) {
         res.send("No results found")
@@ -253,7 +253,7 @@ router.get('/getCard/:cardId', (req, res, next) => {
     join checklist_item on checklist_item.checklistId = checklist.id\
     where cardId =1;\
     "
-  db.executeQueryAsPromise(query, inputs)
+  executeQueryAsPromise(query, inputs)
     .then(results => {
       if (results.length == 0) {
         res.send("No results found")
@@ -283,7 +283,7 @@ router.post("/updateCardOrder", function (req, res, next) {
     update card set `order`=? where id=?;\
     \
     select * from card order by listId, `order`;"
-    db.executeQueryAsPromise(query, validatedInputs.placeholders)
+    executeQueryAsPromise(query, validatedInputs.placeholders)
       .then((queryResults) => {
         res.send(queryResults)
       }).catch((error) => {
@@ -307,7 +307,7 @@ router.post("/updateListOrder", function (req, res, next) {
       update list set `order`=? where id=?;\
       \
       select * from list order by `order`;"
-    db.executeQueryAsPromise(query, validatedInputs.placeholders)
+    executeQueryAsPromise(query, validatedInputs.placeholders)
       .then((queryResults) => {
         res.send(queryResults)
       }).catch((error) => {
@@ -336,7 +336,7 @@ router.post("/deleteUser", function (req, res, next) {
     delete from user where id = ?;\
     \
     select * from user;"
-    db.executeQueryAsPromise(query, validatedInputs.placeholders)
+    executeQueryAsPromise(query, validatedInputs.placeholders)
       .then((queryResults) => {
         res.send(queryResults)
       }).catch((error) => {
@@ -360,7 +360,7 @@ router.post("/deleteBoard", function (req, res, next) {
       delete from board where id = 1;\
       \
       select * from board;"
-    db.executeQueryAsPromise(query, validatedInputs.placeholders)
+    executeQueryAsPromise(query, validatedInputs.placeholders)
       .then((queryResults) => {
         res.send(queryResults)
       }).catch((error) => {
@@ -384,7 +384,7 @@ router.post("/deleteList", function (req, res, next) {
         delete from list where id = 1;\
         \
         select * from list;"
-    db.executeQueryAsPromise(query, validatedInputs.placeholders)
+    executeQueryAsPromise(query, validatedInputs.placeholders)
       .then((queryResults) => {
         res.send(queryResults)
       }).catch((error) => {
@@ -408,7 +408,7 @@ router.post("/deleteCard", function (req, res, next) {
         delete from card where id = 1;\
         \
         select * from card;"
-    db.executeQueryAsPromise(query, validatedInputs.placeholders)
+    executeQueryAsPromise(query, validatedInputs.placeholders)
       .then((queryResults) => {
         res.send(queryResults)
       }).catch((error) => {
