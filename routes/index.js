@@ -1,4 +1,3 @@
-// var express = require('express');
 import { Router } from 'express';
 import { executeQueryAsPromise } from '../db.js';
 
