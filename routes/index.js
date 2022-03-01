@@ -351,7 +351,7 @@ router.post("/deleteBoard", (req, res, next) => {
   const validatedInputs = validateAndFormatInputs(inputs);
   if (validatedInputs.inputsAreValid) {
     const query = "\
-      delete from board where id = 1;\
+      delete from board where id = ?;\
       \
       select * from board;";
     executeQueryAsPromise(query, validatedInputs.placeholders)
@@ -375,7 +375,7 @@ router.post("/deleteList", (req, res, next) => {
   const validatedInputs = validateAndFormatInputs(inputs);
   if (validatedInputs.inputsAreValid) {
     const query = "\
-        delete from list where id = 1;\
+        delete from list where id = ?;\
         \
         select * from list;";
     executeQueryAsPromise(query, validatedInputs.placeholders)
@@ -399,7 +399,7 @@ router.post("/deleteCard", (req, res, next) => {
   const validatedInputs = validateAndFormatInputs(inputs);
   if (validatedInputs.inputsAreValid) {
     const query = "\
-        delete from card where id = 1;\
+        delete from card where id = ?;\
         \
         select * from card;";
     executeQueryAsPromise(query, validatedInputs.placeholders)
