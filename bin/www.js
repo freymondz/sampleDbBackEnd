@@ -11,7 +11,12 @@ import { createServer } from 'http';
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(process.env.PORT || '4400');
+// Only need to use this if the environment port is being set.
+// https://stackoverflow.com/questions/18864677/what-is-process-env-port-in-node-js
+// const port = normalizePort(process.env.PORT || '4400');
+
+const port = 4400;
+
 app.set('port', port);
 
 /**
@@ -32,21 +37,21 @@ server.on('listening', onListening);
  * Normalize a port into a number, string, or false.
  */
 
-function normalizePort (val) {
-  const port = parseInt(val, 10);
+// function normalizePort (val) {
+//   const port = parseInt(val, 10);
 
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  }
+//   if (isNaN(port)) {
+//     // named pipe
+//     return val;
+//   }
 
-  if (port >= 0) {
-    // port number
-    return port;
-  }
+//   if (port >= 0) {
+//     // port number
+//     return port;
+//   }
 
-  return false;
-}
+//   return false;
+// }
 
 /**
  * Event listener for HTTP server "error" event.
@@ -83,6 +88,10 @@ function onListening () {
   const bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  console.log('Welcome to the backend app. I am listening on ' + bind);
-  console.log(`To see if I'm working type http://localhost:${addr.port} in your browser`);
+  // console.log('Welcome to the backend app. I am listening on ' + bind);
+  // console.log(`To see if I'm working type http://localhost:${addr.port} in your browser`);
+  console.log(`
+  Welcome to the backend app. I am listening on ${bind}
+  To see if I'm working type http://localhost:${addr.port} in your browser
+  `);
 }

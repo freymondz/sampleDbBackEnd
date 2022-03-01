@@ -4,7 +4,7 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
-// __dirname doesn't work with ES6 syntax so we need to this as a workaround.
+// pulling __dirname from NODE doesn't work with ES6 syntax so we need to this as a workaround.
 import { fileURLToPath } from 'url';
 const __fileName = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__fileName);
@@ -22,13 +22,22 @@ connect(MODE_PRODUCTION)
   .then((response) => {
     console.log(response);
   }).catch((err) => {
-    console.log("********************");
-    console.log("Something went wrong with your connection to the MySQL server.");
-    console.log("Here are the most likely reasons:");
-    console.log("- You didn't set up a user named apiUser with the password !apisAreFun in Workbench");
-    console.log("- You somehow changed the user name: apiUser or password:!apisAreFun in the db.js file");
-    console.log("********************");
-    console.log('Here is the error message that MySQL gave us', err);
+    // console.log("********************");
+    // console.log("Something went wrong with your connection to the MySQL server.");
+    // console.log("Here are the most likely reasons:");
+    // console.log("- You didn't set up a user named apiUser with the password !apisAreFun in Workbench");
+    // console.log("- You somehow changed the user name: apiUser or password:!apisAreFun in the db.js file");
+    // console.log("********************");
+    // console.log('Here is the error message that MySQL gave us', err);
+    console.log(`
+    ********************
+    Something went wrong with your connection to the MySQL server.
+    Here are the most likely reasons:
+    - You didn't set up a user named apiUser with the password !apisAreFun in Workbench
+    - You somehow changed the user name: apiUser or password:!apisAreFun in the db.js file
+    ********************
+    Here is the error message that MySQL gave us ${err}
+    `);
     process.exit(1);
   });
 
@@ -48,11 +57,15 @@ app.use((req, res, next) => {
 
 // error handler
 app.use((err, req, res, next) => {
-  console.log("Error:", err.message);
-  console.log("StackTrace", err, stack);
+  // console.log("Error:", err.message);
+  // console.log("StackTrace", err, stack);
+  console.log(`
+  Error: ${err.message}
+  StackTrace ${err} ${stack}
+  `);
   res.send("An error occurred, please check the console in the back end app");
-  // Not sure if this actually required? Looking at what SOF is, saying res.send automatically calls res.end.
-  res.end();
+  // https://stackoverflow.com/questions/29555290/what-is-the-difference-between-res-end-and-res-send
+  // res.end();
 });
 
 export default app;
