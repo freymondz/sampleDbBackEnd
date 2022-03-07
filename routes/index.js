@@ -29,12 +29,9 @@ router.post("/addOrUpdateUser", (req, res, next) => {
   let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
   if (validatedInputs.inputsAreValid) {
-    const query = "INSERT INTO `user` (id,`firstName`, `lastName`, `password`, `avatar`, `initials`, `email`, `bio`, `active`, `dateAdded`) VALUES \
-    (?,?,?,?,?,?,?,?,?,?) \
-    on duplicate key update firstName=values(firstName), lastName=values(lastName), password=values(password), avatar=values(avatar), \
-    initials=values(initials), email=values(email), bio=values(bio), active=values(active), dateAdded=values(dateAdded) ;\
-    \
-    select * from `user`";
+    const query = "\
+    INSERT INTO `user` (`id`, `userName`, `status`) VALUES (?, ?, ?) ON duplicate key update `id`=values(`id`), `userName`=values(`userName`), `status`=values(`status`);\
+    SELECT * FROM `user`";
     executeQueryAsPromise(query, validatedInputs.placeholders)
       .then((queryResults) => {
         res.send(queryResults);
@@ -50,17 +47,14 @@ router.post("/addOrUpdateUser", (req, res, next) => {
   }
 });
 
-router.post("/addOrUpdateBoard", (req, res, next) => {
+router.post("/addOrUpdateFolder", (req, res, next) => {
   const { inputs } = req.body;
   let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
   if (validatedInputs.inputsAreValid) {
     const query = "\
-    INSERT INTO `trello`.`board` (id,`title`, `route`, `isPrivate`, `description`, `background`, `settings`) VALUES \
-    (?,?,?,?,?,?,?) \
-    on duplicate key update title=values(title), route=values(route), isPrivate=values(isPrivate), description=values(description), background=values(background), settings=values(settings);\
-    \
-    SELECT * FROM trello.board;";
+    INSERT INTO `folder` (`id`, folderName, color, userId) VALUES (?, ?, ?, ?) on duplicate key update `id`=values(id), folderName=values(folderName), color=values(color), userId=values(userId);\
+    SELECT * FROM `folder`;";
     executeQueryAsPromise(query, validatedInputs.placeholders)
       .then((queryResults) => {
         res.send(queryResults);
@@ -76,17 +70,14 @@ router.post("/addOrUpdateBoard", (req, res, next) => {
   }
 });
 
-router.post("/addOrUpdateList", (req, res, next) => {
+router.post("/addOrUpdateServer", (req, res, next) => {
   const { inputs } = req.body;
   let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
   if (validatedInputs.inputsAreValid) {
     const query = "\
-    insert into list (id,title,boardId,`order`) values \
-    (?,?,?,?) \
-    on duplicate key update title=values(title); \
-    \
-    select * from list;";
+      INSERT INTO `server` (id, serverName) values (?, ?) on duplicate key update id=values(id), serverName=values(serverName);\
+      SELECT * FROM `server`;";
     executeQueryAsPromise(query, validatedInputs.placeholders)
       .then((queryResults) => {
         res.send(queryResults);
@@ -102,17 +93,14 @@ router.post("/addOrUpdateList", (req, res, next) => {
   }
 });
 
-router.post("/addOrUpdateUserBoard", (req, res, next) => {
+router.post("/addOrUpdateServer_member", (req, res, next) => {
   const { inputs } = req.body;
   let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
   if (validatedInputs.inputsAreValid) {
     const query = "\
-    insert into `user-board` (userId,boardId,madeBy,watch) values \
-    (?,?,?,?) \
-    on duplicate key update madeBy=values(madeBy),watch=values(watch); \
-    \
-    select * from `user-board`;";
+    INSERT INTO `server_member` (id, serverUserName, `status`, serverId) values (?, ?, ?, ?) on duplicate key update id=values(id), serverUserName=values(serverUserName), `status`=values(`status`), serverId=values(serverId);\
+    SELECT * FROM `server_member`;";
     executeQueryAsPromise(query, validatedInputs.placeholders)
       .then((queryResults) => {
         res.send(queryResults);
@@ -128,17 +116,175 @@ router.post("/addOrUpdateUserBoard", (req, res, next) => {
   }
 });
 
-router.post("/addOrUpdateCard", (req, res, next) => {
+router.post("/addOrUpdateCategory", (req, res, next) => {
   const { inputs } = req.body;
   let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
   if (validatedInputs.inputsAreValid) {
     const query = "\
-    INSERT INTO card (id, title, `description`, `order`, cover, dateDue, listId) VALUES \
-    (?,?,?,?,?,?,?)\
-    on duplicate key update title=values(title), `description`=values(`description`), `order`=values(`order`), cover=values(cover), dateDue=values(dateDue), listId=values(listId); \
-    \
-    select * from card;";
+    INSERT INTO `category` (id, `name`, serverId) values(?, ?, ?) on duplicate key update id=values(id), `name`=values(`name`), serverId=values(serverId);\
+    SELECT  * FROM `category`;";
+    executeQueryAsPromise(query, validatedInputs.placeholders)
+      .then((queryResults) => {
+        res.send(queryResults);
+      }).catch((error) => {
+        issue = { issue: "There was a problem running your queries", error };
+        console.log(issue);
+        res.send(issue);
+      });
+  } else {
+    issue = { issue: "There was a problem validating your inputs", validatedInputs };
+    console.log(issue);
+    res.send(issue);
+  }
+});
+
+router.post("/addOrUpdateVoice_channel", (req, res, next) => {
+  const { inputs } = req.body;
+  let issue = null;
+  const validatedInputs = validateAndFormatInputs(inputs);
+  if (validatedInputs.inputsAreValid) {
+    const query = "\
+    INSERT INTO `voice_channel` (id, `name`, categoryId) values(?, ?, ?) on duplicate key update id=values(id), `name`=values(`name`), categoryId=values(categoryId);\
+    SELECT  * FROM `voice_channel`;";
+    executeQueryAsPromise(query, validatedInputs.placeholders)
+      .then((queryResults) => {
+        res.send(queryResults);
+      }).catch((error) => {
+        issue = { issue: "There was a problem running your queries", error };
+        console.log(issue);
+        res.send(issue);
+      });
+  } else {
+    issue = { issue: "There was a problem validating your inputs", validatedInputs };
+    console.log(issue);
+    res.send(issue);
+  }
+});
+
+router.post("/addOrUpdateVoice_member", (req, res, next) => {
+  const { inputs } = req.body;
+  let issue = null;
+  const validatedInputs = validateAndFormatInputs(inputs);
+  if (validatedInputs.inputsAreValid) {
+    const query = "\
+    INSERT INTO `voice_member` (id, serverUserName, `status`, voiceChannelId) values(?, ?, ?, ?) on duplicate key update id=values(id), serverUserName=values(serverUserName),`status`=values(`status`), voiceChannelId=values(voiceChannelId);\
+    SELECT * FROM `voice_member`;";
+    executeQueryAsPromise(query, validatedInputs.placeholders)
+      .then((queryResults) => {
+        res.send(queryResults);
+      }).catch((error) => {
+        issue = { issue: "There was a problem running your queries", error };
+        console.log(issue);
+        res.send(issue);
+      });
+  } else {
+    issue = { issue: "There was a problem validating your inputs", validatedInputs };
+    console.log(issue);
+    res.send(issue);
+  }
+});
+
+router.post("/addOrUpdateText_channel", (req, res, next) => {
+  const { inputs } = req.body;
+  let issue = null;
+  const validatedInputs = validateAndFormatInputs(inputs);
+  if (validatedInputs.inputsAreValid) {
+    const query = "\
+    INSERT INTO `text_channel` (id, `name`, categoryId) values(?, ?, ?) on duplicate key update id=values(id), `name`=values(`name`), categoryId=values(categoryId);\
+    SELECT * FROM `text_channel`;";
+    executeQueryAsPromise(query, validatedInputs.placeholders)
+      .then((queryResults) => {
+        res.send(queryResults);
+      }).catch((error) => {
+        issue = { issue: "There was a problem running your queries", error };
+        console.log(issue);
+        res.send(issue);
+      });
+  } else {
+    issue = { issue: "There was a problem validating your inputs", validatedInputs };
+    console.log(issue);
+    res.send(issue);
+  }
+});
+
+router.post("/addOrUpdateText_member", (req, res, next) => {
+  const { inputs } = req.body;
+  let issue = null;
+  const validatedInputs = validateAndFormatInputs(inputs);
+  if (validatedInputs.inputsAreValid) {
+    const query = "\
+    INSERT INTO `text_member` (id, serverUserName, `status`, textChannelId) values(?, ?, ?, ?) on duplicate key update id=values(id), serverUserName=values(serverUserName), `status`=values(`status`), textChannelId=values(textChannelId);\
+    SELECT * FROM `text_member`;";
+    executeQueryAsPromise(query, validatedInputs.placeholders)
+      .then((queryResults) => {
+        res.send(queryResults);
+      }).catch((error) => {
+        issue = { issue: "There was a problem running your queries", error };
+        console.log(issue);
+        res.send(issue);
+      });
+  } else {
+    issue = { issue: "There was a problem validating your inputs", validatedInputs };
+    console.log(issue);
+    res.send(issue);
+  }
+});
+
+router.post("/addOrUpdateMessage", (req, res, next) => {
+  const { inputs } = req.body;
+  let issue = null;
+  const validatedInputs = validateAndFormatInputs(inputs);
+  if (validatedInputs.inputsAreValid) {
+    const query = "\
+    INSERT INTO `message` (id, `timeStamp`, textChannelId) values(?, ?, ?) on duplicate key update id=values(id), `timeStamp`=values(`timeStamp`), textChannelId=values(textChannelId);\
+    SELECT * FROM `message`;";
+    executeQueryAsPromise(query, validatedInputs.placeholders)
+      .then((queryResults) => {
+        res.send(queryResults);
+      }).catch((error) => {
+        issue = { issue: "There was a problem running your queries", error };
+        console.log(issue);
+        res.send(issue);
+      });
+  } else {
+    issue = { issue: "There was a problem validating your inputs", validatedInputs };
+    console.log(issue);
+    res.send(issue);
+  }
+});
+
+router.post("/addFolder-server", (req, res, next) => {
+  const { inputs } = req.body;
+  let issue = null;
+  const validatedInputs = validateAndFormatInputs(inputs);
+  if (validatedInputs.inputsAreValid) {
+    const query = "\
+    INSERT INTO `folder-server` (folderId, serverId) values(?, ?) on duplicate key update folderId=values(folderId), serverId=values(serverId);\
+    SELECT * FROM `folder-server`;";
+    executeQueryAsPromise(query, validatedInputs.placeholders)
+      .then((queryResults) => {
+        res.send(queryResults);
+      }).catch((error) => {
+        issue = { issue: "There was a problem running your queries", error };
+        console.log(issue);
+        res.send(issue);
+      });
+  } else {
+    issue = { issue: "There was a problem validating your inputs", validatedInputs };
+    console.log(issue);
+    res.send(issue);
+  }
+});
+
+router.post("/addUser-server", (req, res, next) => {
+  const { inputs } = req.body;
+  let issue = null;
+  const validatedInputs = validateAndFormatInputs(inputs);
+  if (validatedInputs.inputsAreValid) {
+    const query = "\
+      INSERT INTO `user-server` (userid, serverid) values(?, ?) on duplicate key update userid=values(userid), serverid=values(serverid);\
+      SELECT * FROM `user-server`;";
     executeQueryAsPromise(query, validatedInputs.placeholders)
       .then((queryResults) => {
         res.send(queryResults);
@@ -159,14 +305,13 @@ router.post("/addOrUpdateCard", (req, res, next) => {
 //* *********************************** */
 // Select queries can be done as gets
 
-router.get('/getBoardUsers/:boardId', (req, res, next) => {
-  const inputs = [req.params.boardId];
+router.get('/getServer/:userid', (req, res, next) => {
+  const inputs = [req.params.userid];
   const query = "\
-    select user.* \
-    from user\
-    join `user-board`  on `user-board`.userId = user.id\
-    join board on `user-board`.boardId = board.id\
-    where boardId = ?;";
+    SELECT  serverid\
+    FROM `user-server`\
+    JOIN `server` ON `user-server`.serverid = `server`.id\
+    WHERE userid = ?;";
   executeQueryAsPromise(query, inputs)
     .then(results => {
       if (results.length === 0) {
@@ -181,14 +326,12 @@ router.get('/getBoardUsers/:boardId', (req, res, next) => {
     });
 });
 
-router.get('/getBoardAndListsAndCards/:boardId', (req, res, next) => {
-  const inputs = [req.params.boardId];
+router.get('/getFolder/:userId', (req, res, next) => {
+  const inputs = [req.params.userId];
   const query = "\
-    select board.*,list.*,card.*\
-    from board\
-    join list on list.boardId = board.id\
-    join card on card.listId=list.id\
-    where board.id = ?;  ";
+    SELECT *\
+    FROM folder\
+    WHERE userId = ?;";
   executeQueryAsPromise(query, inputs)
     .then(results => {
       if (results.length === 0) {
@@ -203,53 +346,15 @@ router.get('/getBoardAndListsAndCards/:boardId', (req, res, next) => {
     });
 });
 
-router.get('/getCard/:cardId', (req, res, next) => {
-  const cardId = req.params.cardId;
-  const inputs = [cardId, cardId, cardId, cardId];
+router.get('/getMessage/:serverId-:textId', (req, res, next) => {
+  const inputs = [req.params.serverId, req.params.textId];
   const query = "\
-    select * from card where id=?;\
-    \
-    select activity.cardId as cardId, \
-    activity.id as activityId, \
-    activity.content, \
-    activity.dateCreated,\
-    `user-activity`.watch, `user-activity`.isCreator,\
-    `user`.id as userId, concat(`user`.firstName, ' ', `user`.lastName) as userName\
-    from activity\
-    join `user-activity` on `user-activity`.activityId=activity.id\
-    join `user` on `user`.id = `user-activity`.userId\
-    where activity.cardId = ?;\
-    \
-    select\
-    card.id as cardId,\
-    `user`.id as userId, \
-    `user-card`.watch, \
-    `user-card`.isCreator,\
-    concat(`user`.firstName, ' ', `user`.lastName) as userName\
-    from card \
-    join `user-card` on `user-card`.cardId = card.id\
-    join user on `user-card`.userId = user.id\
-    where cardId=?;\
-    \
-    select\
-    card.id as cardId,\
-    label.id as labelId,\
-    label.name,label.color\
-    from card \
-    join `card-label` on `card-label`.cardId = card.id\
-    join label on `card-label`.labelId = label.id\
-    where cardId =?;\
-    \
-    select\
-    card.id as cardId,\
-    checklist.id as checklistId,\
-    checklist_item.id as checklistItemId,\
-    checklist_item.title,checklist_item.content,checklist_item.dateDue\
-    from card \
-    join checklist on checklist.cardId = card.id\
-    join checklist_item on checklist_item.checklistId = checklist.id\
-    where cardId =1;\
-    ";
+  SELECT `text`, `timeStamp`\
+  FROM `server`\
+  JOIN category on `server`.id = category.serverId\
+  JOIN text_channel on category.id = text_channel.categoryId\
+  JOIN message on message.textChannelId = text_channel.id\
+  WHERE serverId = ? and textChannelId = ?;";
   executeQueryAsPromise(query, inputs)
     .then(results => {
       if (results.length === 0) {
@@ -321,15 +426,14 @@ router.post("/updateListOrder", (req, res, next) => {
 //* **********DELETE ROUTES*********** */
 //* *********************************** */
 
-router.post("/deleteUser", (req, res, next) => {
+router.post("/deleteMessage", (req, res, next) => {
   const { inputs } = req.body;
   let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
   if (validatedInputs.inputsAreValid) {
     const query = "\
-    delete from user where id = ?;\
-    \
-    select * from user;";
+    delete from message where id = ?;\
+    select * from message;";
     executeQueryAsPromise(query, validatedInputs.placeholders)
       .then((queryResults) => {
         res.send(queryResults);
@@ -345,15 +449,14 @@ router.post("/deleteUser", (req, res, next) => {
   }
 });
 
-router.post("/deleteBoard", (req, res, next) => {
+router.post("/deleteText_member", (req, res, next) => {
   const { inputs } = req.body;
   let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
   if (validatedInputs.inputsAreValid) {
     const query = "\
-      delete from board where id = ?;\
-      \
-      select * from board;";
+    delete from text_member where id = ?;\
+    select * from text_member;";
     executeQueryAsPromise(query, validatedInputs.placeholders)
       .then((queryResults) => {
         res.send(queryResults);
@@ -369,15 +472,14 @@ router.post("/deleteBoard", (req, res, next) => {
   }
 });
 
-router.post("/deleteList", (req, res, next) => {
+router.post("/deleteVoice_member", (req, res, next) => {
   const { inputs } = req.body;
   let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
   if (validatedInputs.inputsAreValid) {
     const query = "\
-        delete from list where id = ?;\
-        \
-        select * from list;";
+      delete from voice_member where id = ?;\
+      select * from voice_member;";
     executeQueryAsPromise(query, validatedInputs.placeholders)
       .then((queryResults) => {
         res.send(queryResults);
@@ -393,15 +495,14 @@ router.post("/deleteList", (req, res, next) => {
   }
 });
 
-router.post("/deleteCard", (req, res, next) => {
+router.post("/deleteServer_member", (req, res, next) => {
   const { inputs } = req.body;
   let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
   if (validatedInputs.inputsAreValid) {
     const query = "\
-        delete from card where id = ?;\
-        \
-        select * from card;";
+    delete from server_member where id = ?;\
+    select * from server_member;";
     executeQueryAsPromise(query, validatedInputs.placeholders)
       .then((queryResults) => {
         res.send(queryResults);

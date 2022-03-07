@@ -9,7 +9,7 @@ const state = {
 };
 
 const mySQLConnection = {
-  database: "trello",
+  database: "discord",
   host: "localhost",
   user: "apiUser",
   port: 3306,
