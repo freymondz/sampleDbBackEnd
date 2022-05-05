@@ -52,7 +52,6 @@ router.post("/addOrUpdateUser", (req, res, next) => {
 
 router.post("/addOrUpdateBoard", (req, res, next) => {
   const { inputs } = req.body;
-  let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
   if (validatedInputs.inputsAreValid) {
     const query = "\
@@ -65,12 +64,12 @@ router.post("/addOrUpdateBoard", (req, res, next) => {
       .then((queryResults) => {
         res.send(queryResults);
       }).catch((error) => {
-        issue = { issue: "There was a problem running your queries", error };
+        const issue = { issue: "There was a problem running your queries", error };
         console.log(issue);
         res.send(issue);
       });
   } else {
-    issue = { issue: "There was a problem validating your inputs", validatedInputs };
+    const issue = { issue: "There was a problem validating your inputs", validatedInputs };
     console.log(issue);
     res.send(issue);
   }
@@ -78,7 +77,6 @@ router.post("/addOrUpdateBoard", (req, res, next) => {
 
 router.post("/addOrUpdateList", (req, res, next) => {
   const { inputs } = req.body;
-  let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
   if (validatedInputs.inputsAreValid) {
     const query = "\
@@ -91,12 +89,12 @@ router.post("/addOrUpdateList", (req, res, next) => {
       .then((queryResults) => {
         res.send(queryResults);
       }).catch((error) => {
-        issue = { issue: "There was a problem running your queries", error };
+        const issue = { issue: "There was a problem running your queries", error };
         console.log(issue);
         res.send(issue);
       });
   } else {
-    issue = { issue: "There was a problem validating your inputs", validatedInputs };
+    const issue = { issue: "There was a problem validating your inputs", validatedInputs };
     console.log(issue);
     res.send(issue);
   }
@@ -104,7 +102,6 @@ router.post("/addOrUpdateList", (req, res, next) => {
 
 router.post("/addOrUpdateUserBoard", (req, res, next) => {
   const { inputs } = req.body;
-  let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
   if (validatedInputs.inputsAreValid) {
     const query = "\
@@ -117,12 +114,12 @@ router.post("/addOrUpdateUserBoard", (req, res, next) => {
       .then((queryResults) => {
         res.send(queryResults);
       }).catch((error) => {
-        issue = { issue: "There was a problem running your queries", error };
+        const issue = { issue: "There was a problem running your queries", error };
         console.log(issue);
         res.send(issue);
       });
   } else {
-    issue = { issue: "There was a problem validating your inputs", validatedInputs };
+    const issue = { issue: "There was a problem validating your inputs", validatedInputs };
     console.log(issue);
     res.send(issue);
   }
@@ -130,7 +127,6 @@ router.post("/addOrUpdateUserBoard", (req, res, next) => {
 
 router.post("/addOrUpdateCard", (req, res, next) => {
   const { inputs } = req.body;
-  let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
   if (validatedInputs.inputsAreValid) {
     const query = "\
@@ -143,12 +139,12 @@ router.post("/addOrUpdateCard", (req, res, next) => {
       .then((queryResults) => {
         res.send(queryResults);
       }).catch((error) => {
-        issue = { issue: "There was a problem running your queries", error };
+        const issue = { issue: "There was a problem running your queries", error };
         console.log(issue);
         res.send(issue);
       });
   } else {
-    issue = { issue: "There was a problem validating your inputs", validatedInputs };
+    const issue = { issue: "There was a problem validating your inputs", validatedInputs };
     console.log(issue);
     res.send(issue);
   }
@@ -271,7 +267,6 @@ router.get('/getCard/:cardId', (req, res, next) => {
 
 router.post("/updateCardOrder", (req, res, next) => {
   const { inputs } = req.body;
-  let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
   if (validatedInputs.inputsAreValid) {
     const query = "\
@@ -282,12 +277,12 @@ router.post("/updateCardOrder", (req, res, next) => {
       .then((queryResults) => {
         res.send(queryResults);
       }).catch((error) => {
-        issue = { issue: "There was a problem running your queries", error };
+        const issue = { issue: "There was a problem running your queries", error };
         console.log(issue);
         res.send(issue);
       });
   } else {
-    issue = { issue: "There was a problem validating your inputs", validatedInputs };
+    const issue = { issue: "There was a problem validating your inputs", validatedInputs };
     console.log(issue);
     res.send(issue);
   }
@@ -295,7 +290,6 @@ router.post("/updateCardOrder", (req, res, next) => {
 
 router.post("/updateListOrder", (req, res, next) => {
   const { inputs } = req.body;
-  let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
   if (validatedInputs.inputsAreValid) {
     const query = "\
@@ -306,12 +300,12 @@ router.post("/updateListOrder", (req, res, next) => {
       .then((queryResults) => {
         res.send(queryResults);
       }).catch((error) => {
-        issue = { issue: "There was a problem running your queries", error };
+        const issue = { issue: "There was a problem running your queries", error };
         console.log(issue);
         res.send(issue);
       });
   } else {
-    issue = { issue: "There was a problem validating your inputs", validatedInputs };
+    const issue = { issue: "There was a problem validating your inputs", validatedInputs };
     console.log(issue);
     res.send(issue);
   }
@@ -323,7 +317,6 @@ router.post("/updateListOrder", (req, res, next) => {
 
 router.post("/deleteUser", (req, res, next) => {
   const { inputs } = req.body;
-  let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
   if (validatedInputs.inputsAreValid) {
     const query = "\
@@ -334,12 +327,12 @@ router.post("/deleteUser", (req, res, next) => {
       .then((queryResults) => {
         res.send(queryResults);
       }).catch((error) => {
-        issue = { issue: "There was a problem running your queries", error };
+        const issue = { issue: "There was a problem running your queries", error };
         console.log(issue);
         res.send(issue);
       });
   } else {
-    issue = { issue: "There was a problem validating your inputs", validatedInputs };
+    const issue = { issue: "There was a problem validating your inputs", validatedInputs };
     console.log(issue);
     res.send(issue);
   }
@@ -347,7 +340,6 @@ router.post("/deleteUser", (req, res, next) => {
 
 router.post("/deleteBoard", (req, res, next) => {
   const { inputs } = req.body;
-  let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
   if (validatedInputs.inputsAreValid) {
     const query = "\
@@ -358,12 +350,12 @@ router.post("/deleteBoard", (req, res, next) => {
       .then((queryResults) => {
         res.send(queryResults);
       }).catch((error) => {
-        issue = { issue: "There was a problem running your queries", error };
+        const issue = { issue: "There was a problem running your queries", error };
         console.log(issue);
         res.send(issue);
       });
   } else {
-    issue = { issue: "There was a problem validating your inputs", validatedInputs };
+    const issue = { issue: "There was a problem validating your inputs", validatedInputs };
     console.log(issue);
     res.send(issue);
   }
@@ -371,7 +363,6 @@ router.post("/deleteBoard", (req, res, next) => {
 
 router.post("/deleteList", (req, res, next) => {
   const { inputs } = req.body;
-  let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
   if (validatedInputs.inputsAreValid) {
     const query = "\
@@ -382,12 +373,12 @@ router.post("/deleteList", (req, res, next) => {
       .then((queryResults) => {
         res.send(queryResults);
       }).catch((error) => {
-        issue = { issue: "There was a problem running your queries", error };
+        const issue = { issue: "There was a problem running your queries", error };
         console.log(issue);
         res.send(issue);
       });
   } else {
-    issue = { issue: "There was a problem validating your inputs", validatedInputs };
+    const issue = { issue: "There was a problem validating your inputs", validatedInputs };
     console.log(issue);
     res.send(issue);
   }
@@ -395,7 +386,6 @@ router.post("/deleteList", (req, res, next) => {
 
 router.post("/deleteCard", (req, res, next) => {
   const { inputs } = req.body;
-  let issue = null;
   const validatedInputs = validateAndFormatInputs(inputs);
   if (validatedInputs.inputsAreValid) {
     const query = "\
@@ -406,12 +396,12 @@ router.post("/deleteCard", (req, res, next) => {
       .then((queryResults) => {
         res.send(queryResults);
       }).catch((error) => {
-        issue = { issue: "There was a problem running your queries", error };
+        const issue = { issue: "There was a problem running your queries", error };
         console.log(issue);
         res.send(issue);
       });
   } else {
-    issue = { issue: "There was a problem validating your inputs", validatedInputs };
+    const issue = { issue: "There was a problem validating your inputs", validatedInputs };
     console.log(issue);
     res.send(issue);
   }

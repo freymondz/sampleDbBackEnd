@@ -29,7 +29,8 @@ connect(MODE_PRODUCTION)
     // console.log("- You somehow changed the user name: apiUser or password:!apisAreFun in the db.js file");
     // console.log("********************");
     // console.log('Here is the error message that MySQL gave us', err);
-    console.log(`
+    console.log(
+    `
     ********************
     Something went wrong with your connection to the MySQL server.
     Here are the most likely reasons:
@@ -37,7 +38,8 @@ connect(MODE_PRODUCTION)
     - You somehow changed the user name: apiUser or password:!apisAreFun in the db.js file
     ********************
     Here is the error message that MySQL gave us ${err}
-    `);
+    `
+    );
     process.exit(1);
   });
 
@@ -59,10 +61,12 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   // console.log("Error:", err.message);
   // console.log("StackTrace", err, stack);
-  console.log(`
+  console.log(
+  `
   Error: ${err.message}
   StackTrace ${err} ${stack}
-  `);
+  `
+  );
   res.send("An error occurred, please check the console in the back end app");
   // https://stackoverflow.com/questions/29555290/what-is-the-difference-between-res-end-and-res-send
   // res.end();

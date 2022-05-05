@@ -21,11 +21,7 @@ export function executeQueryAsPromise (query, values) {
   return new Promise((resolve, reject) => {
     const rejectObject = { error: null, source: "executeQueryAsPromise", query: query };
     state.pool.query(query, values, (err, rows) => {
-      if (err) {
-        rejectObject.error = err;
-        return reject(rejectObject);
-      }
-      if (rows === undefined) {
+      if (rows === undefined || err) {
         rejectObject.error = err;
         return reject(rejectObject);
       } else {
