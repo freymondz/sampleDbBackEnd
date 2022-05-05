@@ -424,10 +424,10 @@ router.post("/deleteCard", (req, res, next) => {
 // No need to mess with them unless you are an experienced programmer
 
 router.get('/*', (req, res, next) => {
-  res.send(`The route you used:${req.originalUrl} was not found. Was it supposed to be a POST?`);
+  res.send(`The route you used:${encodeURI(req.originalUrl)} was not found. Was it supposed to be a POST?`);
 });
 router.post('/*', (req, res, next) => {
-  res.send(`The route you used:${req.originalUrl} was not found. Was it supposed to be a GET?`);
+  res.send(`The route you used:${encodeURI(req.originalUrl)} was not found. Was it supposed to be a GET?`);
 });
 
 //* *********************************** */
