@@ -1,7 +1,12 @@
+import 'dotenv/config';
+
 import { createPool } from 'mysql';
 
 export const MODE_TEST = 'mode_test';
 export const MODE_PRODUCTION = 'mode_production';
+
+const dbUser = process.env.user;
+const dbPassword = process.env.password;
 
 const state = {
   pool: null,
