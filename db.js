@@ -16,9 +16,9 @@ const state = {
 const mySQLConnection = {
   database: "trello",
   host: "localhost",
-  user: "apiUser",
+  user: dbUser,
   port: 3306,
-  password: "!apisAreFun",
+  password: dbPassword,
   multipleStatements: true
 };
 
